@@ -12,8 +12,6 @@ export default function Index({ requests, auth, errors }) {
     Inertia.visit(`request/${id}`);
   };
 
-  console.log(requests);
-
   const handleDelete = async (id) => {
     const { isConfirmed } = await Swal.fire({
       title: 'Tem certeza que deseja deletar ?',
