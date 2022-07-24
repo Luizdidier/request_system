@@ -127,7 +127,12 @@ export default function Index({ clients, auth, errors }) {
               <Button onClick={handleButton}>Novo Cliente</Button>
             </div>
             <div className="p-6 bg-white border-b border-gray-200">
-              <DataTable columns={columns} data={clients} pagination />
+              <DataTable
+                columns={columns}
+                data={clients}
+                pagination
+                noDataComponent="Não há dados disponíveis"
+              />
             </div>
           </div>
         </div>

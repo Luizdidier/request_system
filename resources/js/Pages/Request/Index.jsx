@@ -149,7 +149,12 @@ export default function Index({ requests, auth, errors, paymentTypes }) {
                   </div>
                 </div>
               </form>
-              <DataTable columns={columns} data={requests} pagination />
+              <DataTable
+                columns={columns}
+                data={requests}
+                pagination
+                noDataComponent="Não há dados disponíveis"
+              />
             </div>
           </div>
         </div>

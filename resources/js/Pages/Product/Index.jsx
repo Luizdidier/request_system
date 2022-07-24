@@ -131,7 +131,12 @@ export default function Index({ products, auth, errors }) {
               <Button onClick={handleButton}>Novo Produto</Button>
             </div>
             <div className="p-6 bg-white border-b border-gray-200">
-              <DataTable columns={columns} data={products} pagination />
+              <DataTable
+                columns={columns}
+                data={products}
+                pagination
+                noDataComponent="Não há dados disponíveis"
+              />
             </div>
           </div>
         </div>

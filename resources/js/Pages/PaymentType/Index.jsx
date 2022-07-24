@@ -114,7 +114,12 @@ export default function Index({ paymentTypes, auth, errors }) {
               <Button onClick={handleButton}>Nova Forma de Pagamento</Button>
             </div>
             <div className="p-6 bg-white border-b border-gray-200">
-              <DataTable columns={columns} data={paymentTypes} pagination />
+              <DataTable
+                columns={columns}
+                data={paymentTypes}
+                pagination
+                noDataComponent="Não há dados disponíveis"
+              />
             </div>
           </div>
         </div>
