@@ -34,11 +34,11 @@ $ cd request_system
 # Instale as dependencias do PHP
 $ composer install
 
-# Lembre-se de configurar o banco de dados na .env, após configurar o banco execute as migrations com o seed
-$ php artisan migrate --seed
-
 # Instale as dependências do React
 $ npm install
+
+# Lembre-se de configurar o banco de dados na .env, após configurar o banco execute as migrations com o seed
+$ php artisan migrate --seed
 
 # Execute o Hot loader do vite
 $ npm run dev
