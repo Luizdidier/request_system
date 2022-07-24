@@ -8,6 +8,12 @@ import CurrencyFormat from 'react-currency-format';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
+const paginationComponentOptions = {
+  noRowsPerPage: true,
+  rowsPerPageText: 'Filas por página',
+  rangeSeparatorText: 'de',
+};
+
 export default function Index({ products, auth, errors }) {
   const handleEdit = (id) => {
     Inertia.visit(`product/${id}`);
@@ -136,6 +142,7 @@ export default function Index({ products, auth, errors }) {
                 data={products}
                 pagination
                 noDataComponent="Não há dados disponíveis"
+                paginationComponentOptions={paginationComponentOptions}
               />
             </div>
           </div>

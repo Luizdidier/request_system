@@ -7,7 +7,11 @@ import Input from '@/Components/Input';
 import DataTable from 'react-data-table-component';
 import { Inertia } from '@inertiajs/inertia';
 
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+const paginationComponentOptions = {
+  noRowsPerPage: true,
+  rowsPerPageText: 'Filas por página',
+  rangeSeparatorText: 'de',
+};
 
 export default function Index({ requests, auth, errors, paymentTypes }) {
   const { data, setData, get } = useForm({
@@ -16,19 +20,6 @@ export default function Index({ requests, auth, errors, paymentTypes }) {
   });
   const handleEdit = (id) => {
     Inertia.visit(`request/${id}`);
-  };
-
-  const handleDelete = async (id) => {
-    const { isConfirmed } = await Swal.fire({
-      title: 'Tem certeza que deseja deletar ?',
-      showDenyButton: true,
-      confirmButtonText: 'Sim',
-      denyButtonText: `Não`,
-    });
-
-    if (isConfirmed) {
-      Inertia.delete(route('request.destroy', id));
-    }
   };
 
   const columns = [
@@ -154,6 +145,7 @@ export default function Index({ requests, auth, errors, paymentTypes }) {
                 data={requests}
                 pagination
                 noDataComponent="Não há dados disponíveis"
+                paginationComponentOptions={paginationComponentOptions}
               />
             </div>
           </div>

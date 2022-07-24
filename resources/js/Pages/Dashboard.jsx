@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
-import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
 
 export default function Dashboard(props) {
@@ -10,7 +9,6 @@ export default function Dashboard(props) {
   const fetchData = useCallback(async () => {
     try {
       const { data } = await axios.get(route('request.requestsToday'));
-      console.log(data);
       setRequestsToday(data?.requestsToday);
     } catch (err) {
       console.log(err);
@@ -18,8 +16,15 @@ export default function Dashboard(props) {
   }, []);
 
   useEffect(() => {
+    setInterval(() => {
+      fetchData();
+    }, 10000);
+  }, []);
+
+  useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <Authenticated
       auth={props.auth}

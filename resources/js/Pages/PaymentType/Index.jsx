@@ -4,9 +4,14 @@ import { Head } from '@inertiajs/inertia-react';
 import Button from '@/Components/Button';
 import DataTable from 'react-data-table-component';
 import { Inertia } from '@inertiajs/inertia';
-import moment from 'moment';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+
+const paginationComponentOptions = {
+  noRowsPerPage: true,
+  rowsPerPageText: 'Filas por página',
+  rangeSeparatorText: 'de',
+};
 
 export default function Index({ paymentTypes, auth, errors }) {
   const handleEdit = (id) => {
@@ -119,6 +124,7 @@ export default function Index({ paymentTypes, auth, errors }) {
                 data={paymentTypes}
                 pagination
                 noDataComponent="Não há dados disponíveis"
+                paginationComponentOptions={paginationComponentOptions}
               />
             </div>
           </div>

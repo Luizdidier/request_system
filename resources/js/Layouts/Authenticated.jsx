@@ -99,7 +99,7 @@ export default function Authenticated({ auth, header, children }) {
                       method="post"
                       as="button"
                     >
-                      Log Out
+                      Sair
                     </Dropdown.Link>
                   </Dropdown.Content>
                 </Dropdown>

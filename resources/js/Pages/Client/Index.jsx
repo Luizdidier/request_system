@@ -8,6 +8,12 @@ import moment from 'moment';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
+const paginationComponentOptions = {
+  noRowsPerPage: true,
+  rowsPerPageText: 'Filas por página',
+  rangeSeparatorText: 'de',
+};
+
 export default function Index({ clients, auth, errors }) {
   const handleEdit = (id) => {
     Inertia.visit(`client/${id}`);
@@ -126,12 +132,13 @@ export default function Index({ clients, auth, errors }) {
             <div className="px-4 py-3 bg-gray-50 text-left sm:px-6">
               <Button onClick={handleButton}>Novo Cliente</Button>
             </div>
-            <div className="p-6 bg-white border-b border-gray-200">
+            <div className="p-6 bg-white border-b border-gray-200 appearance-none">
               <DataTable
                 columns={columns}
                 data={clients}
                 pagination
                 noDataComponent="Não há dados disponíveis"
+                paginationComponentOptions={paginationComponentOptions}
               />
             </div>
           </div>

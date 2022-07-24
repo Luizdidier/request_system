@@ -8,21 +8,18 @@ import CurrencyInput from 'react-currency-input-field';
 import InputMask from 'react-input-mask';
 import Input from '@/Components/Input';
 import DataTable from 'react-data-table-component';
-import { Inertia } from '@inertiajs/inertia';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import CurrencyFormat from 'react-currency-format';
 
 export default function Create({
   auth,
-  paymentType = null,
   clients,
   products,
   paymentTypes,
-  request,
   errors,
 }) {
-  const { data, setData, post, put, processing, clearErrors } = useForm({
+  const { data, setData, post, put, processing } = useForm({
     client_id: '',
     total: '',
   });
