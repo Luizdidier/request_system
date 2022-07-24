@@ -174,6 +174,7 @@ export default function Create({
           productId: findProduct.id,
           productName: findProduct.descricao,
           quantity: data.quantity,
+          preco: data.preco,
           total: data.total,
         },
       ];

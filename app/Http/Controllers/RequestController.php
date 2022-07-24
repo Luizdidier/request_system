@@ -94,9 +94,10 @@ class RequestController extends Controller
     
                 $productId = $productValue['productId'];
                 $quantity = $productValue['quantity'];
+                $preco = $productValue['preco'];
     
                 $req->products()
-                    ->attach($productId, ['quantity' => $quantity]);
+                    ->attach($productId, ['quantity' => $quantity, 'unit_value' => $preco, ]);
             }
     
             $req->save();

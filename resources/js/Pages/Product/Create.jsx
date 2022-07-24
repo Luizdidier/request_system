@@ -116,9 +116,9 @@ export default function Create({ auth, product = null }) {
                         decimalsLimit={2}
                         intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
                         className="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                        onValueChange={(value, name) =>
-                          setData(name, value.replace(',', '.'))
-                        }
+                        onValueChange={(value, name) => {
+                          setData(name, value?.replace(',', '.') || '');
+                        }}
                       />
                     </div>
                   </div>

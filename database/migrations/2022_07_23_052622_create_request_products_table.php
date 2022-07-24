@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('requests_id');
             $table->foreignId('product_id');
             $table->string('quantity');
+            $table->string('unit_value');
             $table->foreign('requests_id')->references('id')->on('request');
             $table->foreign('product_id')->references('id')->on('product');
         });
