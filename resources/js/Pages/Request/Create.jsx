@@ -207,7 +207,7 @@ export default function Create({
         </h2>
       }
     >
-      <Head title="Nova Forma de Pagamento" />
+      <Head title="Novo Pedido" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
