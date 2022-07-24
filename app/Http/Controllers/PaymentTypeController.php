@@ -45,7 +45,7 @@ class PaymentTypeController extends Controller
         
         $request->validate([
             'descricao' => 'required|string|max:255',
-        ], [
+        ],[
             'descricao.required' => 'Campo de Descricao é obrigatório'
         ]);
 
@@ -81,6 +81,8 @@ class PaymentTypeController extends Controller
         //
         $request->validate([
             'descricao' => 'required|string|max:255',
+        ],[
+            'descricao.required' => 'Campo de Descricao é obrigatório'
         ]);
 
         $paymentType = PaymentType::find($id);

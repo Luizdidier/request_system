@@ -52,6 +52,7 @@ class ClientController extends Controller
             'nome.required' => 'Campo de Nome é obrigatório',
             'cpf/cnpj.required' => 'Campo de CPF ou CNPJ é obrigatório',
             'cpf/cnpj.cpf_ou_cnpj' => 'CPF ou CNPJ inválido',
+            'cpf/cnpj.unique' => 'CPF ou CNPJ já esta cadastrado',
             'telefone.required' => 'Campo de Telefone é obrigatório',
             'dataNasc.required' => 'Campo de Data de nascimento é obrigatório',
             'dataNasc.date_format' => 'Campo de Data de nascimento é obrigatório',
@@ -92,9 +93,17 @@ class ClientController extends Controller
         //
         $request->validate([
             'nome' => 'required|string|max:255',
-            'cpf/cnpj' => 'required|string|max:255',
+            'cpf/cnpj' => 'required|cpf_ou_cnpj|max:255|unique:client',
             'telefone' => 'required|string|max:255',
             'dataNasc' =>  'date_format:Y-m-d' 
+        ], [
+            'nome.required' => 'Campo de Nome é obrigatório',
+            'cpf/cnpj.required' => 'Campo de CPF ou CNPJ é obrigatório',
+            'cpf/cnpj.cpf_ou_cnpj' => 'CPF ou CNPJ inválido',
+            'cpf/cnpj.unique' => 'CPF ou CNPJ já esta cadastrado',
+            'telefone.required' => 'Campo de Telefone é obrigatório',
+            'dataNasc.required' => 'Campo de Data de nascimento é obrigatório',
+            'dataNasc.date_format' => 'Campo de Data de nascimento é obrigatório',
         ]);
 
         $client = Client::find($id);
