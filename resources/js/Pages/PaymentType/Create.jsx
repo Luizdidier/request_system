@@ -1,19 +1,15 @@
 import React from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm } from '@inertiajs/inertia-react';
-import InputMask from 'react-input-mask';
-import Datepicker from 'flowbite-datepicker/Datepicker';
 import Button from '@/Components/Button';
 import Input from '@/Components/Input';
 import Label from '@/Components/Label';
 import ValidationErrors from '@/Components/ValidationErrors';
-import moment from 'moment';
-import CurrencyInput from 'react-currency-input-field';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export default function Create({ auth, paymentType = null }) {
-  const { data, setData, post, put, processing, errors, reset } = useForm({
+  const { data, setData, post, put, processing, errors } = useForm({
     id: paymentType?.id || null,
     descricao: paymentType?.descricao || '',
   });
@@ -27,6 +23,15 @@ export default function Create({ auth, paymentType = null }) {
     );
   };
 
+  const mountSwal = (msg) => {
+    Swal.fire({
+      icon: 'success',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
   const submit = (e) => {
     e.preventDefault();
 
@@ -34,18 +39,19 @@ export default function Create({ auth, paymentType = null }) {
 
     if (!data.id) {
       message = 'Forma de pagamento cadastrada com sucesso';
-      post(route('paymentType.register'));
+      post(route('paymentType.register'), {
+        onSuccess: () => {
+          mountSwal(message);
+        },
+      });
     } else {
       message = 'Forma de pagemento atualizada com sucesso';
-      put(route('paymentType.update', data.id));
+      put(route('paymentType.update', data.id), {
+        onSuccess: () => {
+          mountSwal(message);
+        },
+      });
     }
-
-    Swal.fire({
-      icon: 'success',
-      title: message,
-      showConfirmButton: false,
-      timer: 1500,
-    });
   };
 
   return (

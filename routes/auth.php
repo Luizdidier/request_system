@@ -83,5 +83,10 @@ Route::middleware('auth')->group(function () {
     Route::get('request', [RequestController::class, 'index'])->name('request.index');
     Route::get('request/register', [RequestController::class, 'create'])->name('request.register');
     Route::post('request/register', [RequestController::class, 'store']);
+    Route::get('request/{id}', [RequestController::class, 'show'])->name('request.show');
+    
+
+
+    Route::get('request-today', [RequestController::class, 'requestsToday'])->name('request.requestsToday');
 });
  

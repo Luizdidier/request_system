@@ -48,6 +48,12 @@ class ClientController extends Controller
             'cpf/cnpj' => 'required|string|max:255|unique:client',
             'telefone' => 'required|string|max:255',
             'dataNasc' =>  'date_format:Y-m-d' 
+        ], [
+            'nome.required' => 'Campo de Nome é obrigatório',
+            'cpf/cnpj.required' => 'Campo de CPF ou CNPJ é obrigatório',
+            'telefone.required' => 'Campo de Telefone é obrigatório',
+            'dataNasc.required' => 'Campo de Data de nascimento é obrigatório',
+            'dataNasc.date_format' => 'Campo de Data de nascimento é obrigatório',
         ]);
 
         Client::create([

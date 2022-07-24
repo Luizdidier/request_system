@@ -32,6 +32,15 @@ export default function Authenticated({ auth, header, children }) {
 
               <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <NavLink
+                  href={route('request.index')}
+                  active={route().current('request.index')}
+                >
+                  Pedidos
+                </NavLink>
+              </div>
+
+              <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <NavLink
                   href={route('client.index')}
                   active={route().current('client.index')}
                 >
@@ -147,6 +156,42 @@ export default function Authenticated({ auth, header, children }) {
               active={route().current('dashboard')}
             >
               Dashboard
+            </ResponsiveNavLink>
+          </div>
+
+          <div className="pt-2 pb-3 space-y-1">
+            <ResponsiveNavLink
+              href={route('request.index')}
+              active={route().current('request.index')}
+            >
+              Pedidos
+            </ResponsiveNavLink>
+          </div>
+
+          <div className="pt-2 pb-3 space-y-1">
+            <ResponsiveNavLink
+              href={route('client.index')}
+              active={route().current('client.index')}
+            >
+              Clientes
+            </ResponsiveNavLink>
+          </div>
+
+          <div className="pt-2 pb-3 space-y-1">
+            <ResponsiveNavLink
+              href={route('product.index')}
+              active={route().current('product.index')}
+            >
+              Produtos
+            </ResponsiveNavLink>
+          </div>
+
+          <div className="pt-2 pb-3 space-y-1">
+            <ResponsiveNavLink
+              href={route('paymentType.index')}
+              active={route().current('paymentType.index')}
+            >
+              Forma de Pagamento
             </ResponsiveNavLink>
           </div>
 

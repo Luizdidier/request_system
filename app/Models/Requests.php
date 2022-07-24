@@ -17,7 +17,7 @@ class Requests extends Model
     ];
 
     public function products(){
-        return $this->belongsToMany(Product::class, 'request_products');
+        return $this->belongsToMany(Product::class, 'request_products')->withPivot('quantity');
     }
 
     public function client(){

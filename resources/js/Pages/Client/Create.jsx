@@ -11,7 +11,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export default function Create({ auth, client = null }) {
-  const { data, setData, post, put, processing, errors, reset } = useForm({
+  const { data, setData, post, put, processing, errors } = useForm({
     id: client?.id || null,
     nome: client?.nome || '',
     'cpf/cnpj': client?.['cpf/cnpj'] || '',
@@ -30,6 +30,15 @@ export default function Create({ auth, client = null }) {
     );
   };
 
+  const mountSwal = (msg) => {
+    Swal.fire({
+      icon: 'success',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
   const submit = (e) => {
     e.preventDefault();
 
@@ -37,29 +46,27 @@ export default function Create({ auth, client = null }) {
 
     if (!data.id) {
       message = 'Cliente cadastrado com sucesso';
-      post(route('client.register'));
+      post(
+        route('client.register', {
+          onSuccess: () => {
+            mountSwal(message);
+          },
+        })
+      );
     } else {
       message = 'Cliente atualizado com sucesso';
-      put(route('client.update', data.id));
+      put(route('client.update', data.id), {
+        onSuccess: () => {
+          mountSwal(message);
+        },
+      });
     }
-
-    Swal.fire({
-      icon: 'success',
-      title: message,
-      showConfirmButton: false,
-      timer: 1500,
-    });
   };
 
-  const beforeMaskedValueChange = (
-    newState,
-    oldState,
-    userInput,
-    nameInput
-  ) => {
-    var { value } = newState;
-    var selection = newState.selection;
-    var cursorPosition = selection ? selection.start : null;
+  const beforeMaskedValueChange = (newState, userInput, nameInput) => {
+    let { value } = newState;
+    let selection = newState.selection;
+    let cursorPosition = selection ? selection.start : null;
 
     if (
       (value.endsWith('-') &&
@@ -91,10 +98,6 @@ export default function Create({ auth, client = null }) {
     };
   };
 
-  const auxBeforeMask = (newState, oldState, userInput) => {
-    beforeMaskedValueChange(newState, oldState, userInput, nameInput);
-  };
-
   return (
     <Authenticated
       auth={auth}
@@ -105,7 +108,7 @@ export default function Create({ auth, client = null }) {
         </h2>
       }
     >
-      <Head title="Create Request" />
+      <Head title="Novo Cliente" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -141,18 +144,17 @@ export default function Create({ auth, client = null }) {
                         value={data['cpf/cnpj']}
                         beforeMaskedValueChange={(
                           newState,
-                          oldState,
+                          _oldState,
                           userInput
                         ) =>
                           beforeMaskedValueChange(
                             newState,
-                            oldState,
                             userInput,
                             'cpf/cnpj'
                           )
                         }
                       >
-                        {(inputProps) => (
+                        {() => (
                           <Input
                             type="text"
                             name="cpf/cnpj"
@@ -185,18 +187,17 @@ export default function Create({ auth, client = null }) {
                         value={data.telefone}
                         beforeMaskedValueChange={(
                           newState,
-                          oldState,
+                          _oldState,
                           userInput
                         ) =>
                           beforeMaskedValueChange(
                             newState,
-                            oldState,
                             userInput,
                             'telefone'
                           )
                         }
                       >
-                        {(inputProps) => (
+                        {() => (
                           <Input
                             type="text"
                             name="telefone"

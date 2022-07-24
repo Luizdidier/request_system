@@ -8,8 +8,10 @@ import CurrencyInput from 'react-currency-input-field';
 import InputMask from 'react-input-mask';
 import Input from '@/Components/Input';
 import DataTable from 'react-data-table-component';
+import { Inertia } from '@inertiajs/inertia';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import CurrencyFormat from 'react-currency-format';
 
 export default function Create({
   auth,
@@ -17,8 +19,10 @@ export default function Create({
   clients,
   products,
   paymentTypes,
+  request,
+  errors,
 }) {
-  const { data, setData, post, put, processing, errors, reset } = useForm({
+  const { data, setData, post, put, processing, clearErrors } = useForm({
     client_id: '',
     total: '',
   });
@@ -40,7 +44,16 @@ export default function Create({
     },
     {
       name: 'Valor Total',
-      selector: (row) => row.total,
+      selector: (row) => (
+        <CurrencyFormat
+          value={row.total}
+          decimalSeparator=","
+          displayType={'text'}
+          thousandSeparator={'.'}
+          prefix={'R$'}
+          renderText={(value) => <div>{value}</div>}
+        />
+      ),
     },
     {
       name: '',
@@ -86,25 +99,36 @@ export default function Create({
     );
   };
 
-  const submit = (e) => {
+  const mountSwal = (msg) =>
+    Swal.fire({
+      icon: 'success',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+
+  const submit = async (e) => {
     e.preventDefault();
 
     let message = '';
 
     if (!data.id) {
       message = 'Pedido cadastrada com sucesso';
-      post(route('request.register'));
+      post(route('request.register'), {
+        onSuccess: () => {
+          mountSwal(message);
+        },
+      });
     } else {
       message = 'Pedido atualizada com sucesso';
-      put(route('request.update', data.id));
+      put(
+        route('request.update', {
+          onSuccess: () => {
+            mountSwal(message);
+          },
+        })
+      );
     }
-
-    Swal.fire({
-      icon: 'success',
-      title: message,
-      showConfirmButton: false,
-      timer: 1500,
-    });
   };
 
   useEffect(() => {
@@ -292,7 +316,7 @@ export default function Create({
                         id="total"
                         name="total"
                         disabled
-                        value={data.total}
+                        value={data.total || 0}
                         decimalsLimit={2}
                         intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
                         className="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
@@ -331,8 +355,20 @@ export default function Create({
           <div className="shadow overflow-hidden sm:rounded-md">
             <div className="px-4 py-5 bg-white sm:p-6">
               <div className="grid grid-cols-6 gap-6">
+                <div className="flex justify-between p-4">
+                  <div>
+                    <h1 className="text-2xl w-3/5 font-extrabold tracking-widest text-black">
+                      Carrinho
+                    </h1>
+                  </div>
+                  <div className="p-2"></div>
+                </div>
                 <div className="col-span-12 sm:col-span-12">
-                  <DataTable columns={columns} data={listProducts} />
+                  <DataTable
+                    columns={columns}
+                    data={listProducts}
+                    noDataComponent="Carrinho Vazio"
+                  />
                 </div>
               </div>
             </div>

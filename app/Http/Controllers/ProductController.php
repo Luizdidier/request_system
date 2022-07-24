@@ -46,6 +46,10 @@ class ProductController extends Controller
             'descricao' => 'required|string|max:255',
             'unidadeMedida' => 'required|string|max:255',
             'preco' => 'required|string|max:255',
+        ], [
+            'descricao.required' => 'Campo de Descrição é obrigatório',
+            'unidadeMedida.required' => 'Campo de Unidade de medida é obrigatório',
+            'preco.required' => 'Campo de Preço é obrigatório',
         ]);
 
         Product::create([

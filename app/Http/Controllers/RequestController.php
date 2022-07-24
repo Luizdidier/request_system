@@ -9,6 +9,8 @@ use App\Models\Client;
 use App\Models\Product;
 use App\Models\PaymentType;
 use Inertia\Inertia;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Response;
 
 class RequestController extends Controller
 {
@@ -17,11 +19,32 @@ class RequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $requests = Requests::with(['products', 'client', 'paymentType'])->get();
-        return Inertia::render('Request/Index', ['requests' => $requests]);
+        $client = $request->query('client');
+        $paymentType_id = $request->query('paymentType_id');
+        
+        if (empty($client) && empty($paymentType_id)) {
+            $paymentTypes = PaymentType::get();
+            $requests = Requests::with(['products', 'client', 'paymentType'])->get();
+            return Inertia::render('Request/Index', ['requests' => $requests, 'paymentTypes' => $paymentTypes]);
+        } else {
+            $paymentTypes = PaymentType::get();
+            $requests = Requests::with(['products', 'client', 'paymentType']);
+
+            if (!empty($client)) {
+                $requests = $requests->whereRelation('client', 'nome', 'like', '%'.$client.'%');
+            }
+
+            if (!empty($paymentType_id)) {
+                $requests = $requests->whereRelation('paymentType', 'id', $paymentType_id);
+            }
+
+
+            $requests = $requests->get();
+            return Inertia::render('Request/Index', ['requests' => $requests, 'paymentTypes' => $paymentTypes]);
+        }
     }
 
     /**
@@ -53,6 +76,11 @@ class RequestController extends Controller
             $request->validate([
                 'client_id' => 'required|string|max:255',
                 'paymentType_id' => 'required|string|max:255',
+                'products' => 'required|array|min:1'
+            ], [
+                'client_id.required' => "Campo de Cliente é obrigatório.",
+                'paymentType_id.required' => "Campo de Forma de pagamento é obrigatório.",
+                'products.required' => "É obrigatório ter pelo menos um Produto cadastrado no pedido."
             ]);
     
             DB::beginTransaction();
@@ -82,52 +110,30 @@ class RequestController extends Controller
       
     }
 
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show($id)
-    // {
-    //     //
-    //     $product = Product::where('id', '=', $id)->get()->first();
-    //     return Inertia::render('Product/Create', ['product' => $product]);
-    // }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  
+     * @return \Inertia\Response
+     */
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, $id)
-    // {
-    //     //
-    //     $request->validate([
-    //         'descricao' => 'required|string|max:255',
-    //         'unidadeMedida' => 'required|string|max:255',
-    //         'preco' => 'required|string|max:255',
-    //     ]);
+    public function show()
+    {
+        //
+        $request = Requests::with(['products', 'client', 'paymentType'])
+                  ->where('id', '=', $id)->get()->first();
+        return Inertia::render('Request/Show', ['request' => $request]);
+    }
 
-    //     $product = Product::find($id);
-    //     $product->descricao = $request->descricao;
-    //     $product->unidadeMedida = $request->unidadeMedida;
-    //     $product->preco = $request->preco;
-    //     $product->save();
-    //     return redirect('/product');
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy($id)
-    // {
-    //     Product::find($id)->delete();
-    //     return redirect('/product');
-    // }
+    /**
+     * Display the specified resource.
+     *
+     * @return \Inertia\Response
+     */
+    public function requestsToday()
+    {   
+        $requests = Requests::whereDate('created_at', '2022-07-24')->get();
+        $count = count($requests);
+        return response()->json(['requestsToday' => $count]);
+    }
 }

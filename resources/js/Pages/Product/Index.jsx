@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/inertia-react';
 import Button from '@/Components/Button';
 import DataTable from 'react-data-table-component';
 import { Inertia } from '@inertiajs/inertia';
-import moment from 'moment';
+import CurrencyFormat from 'react-currency-format';
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
@@ -37,7 +37,16 @@ export default function Index({ products, auth, errors }) {
     },
     {
       name: 'Preço',
-      selector: (row) => `R$ ${row.preco}`,
+      selector: (row) => (
+        <CurrencyFormat
+          value={row.preco.replace('.', ',')}
+          decimalSeparator=","
+          displayType={'text'}
+          thousandSeparator={'.'}
+          prefix={'R$'}
+          renderText={(value) => <div>{value}</div>}
+        />
+      ),
     },
     {
       name: '',

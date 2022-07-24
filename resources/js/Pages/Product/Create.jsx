@@ -10,7 +10,7 @@ import CurrencyInput from 'react-currency-input-field';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export default function Create({ auth, product = null }) {
-  const { data, setData, post, put, processing, errors, reset } = useForm({
+  const { data, setData, post, put, processing, errors } = useForm({
     id: product?.id || null,
     descricao: product?.descricao || '',
     unidadeMedida: product?.unidadeMedida || '',
@@ -26,6 +26,15 @@ export default function Create({ auth, product = null }) {
     );
   };
 
+  const mountSwal = (msg) => {
+    Swal.fire({
+      icon: 'success',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
   const submit = (e) => {
     e.preventDefault();
 
@@ -33,18 +42,19 @@ export default function Create({ auth, product = null }) {
 
     if (!data.id) {
       message = 'Produto cadastrado com sucesso';
-      post(route('product.register'));
+      post(route('product.register'), {
+        onSuccess: () => {
+          mountSwal(message);
+        },
+      });
     } else {
       message = 'Produto atualizado com sucesso';
-      put(route('product.update', data.id));
+      put(route('product.update', data.id), {
+        onSuccess: () => {
+          mountSwal(message);
+        },
+      });
     }
-
-    Swal.fire({
-      icon: 'success',
-      title: message,
-      showConfirmButton: false,
-      timer: 1500,
-    });
   };
 
   return (
@@ -106,7 +116,9 @@ export default function Create({ auth, product = null }) {
                         decimalsLimit={2}
                         intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
                         className="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                        onValueChange={(value, name) => setData(name, value)}
+                        onValueChange={(value, name) =>
+                          setData(name, value.replace(',', '.'))
+                        }
                       />
                     </div>
                   </div>
