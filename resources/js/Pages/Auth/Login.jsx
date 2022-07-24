@@ -47,7 +47,7 @@ export default function Login({ status, canResetPassword }) {
 
       <form onSubmit={submit}>
         <div>
-          <Label forInput="email" value="Email" />
+          <Label forInput="email" value="E-mail" />
 
           <Input
             type="text"
@@ -61,7 +61,7 @@ export default function Login({ status, canResetPassword }) {
         </div>
 
         <div className="mt-4">
-          <Label forInput="password" value="Password" />
+          <Label forInput="password" value="Senha" />
 
           <Input
             type="password"
@@ -81,17 +81,17 @@ export default function Login({ status, canResetPassword }) {
               handleChange={onHandleChange}
             />
 
-            <span className="ml-2 text-sm text-gray-600">Remember me</span>
+            <span className="ml-2 text-sm text-gray-600">Lembre-me</span>
           </label>
         </div>
 
         <div className="flex items-center justify-end mt-4">
           {canResetPassword && (
             <Link
-              href={route('password.request')}
+              href={route('register')}
               className="underline text-sm text-gray-600 hover:text-gray-900"
             >
-              Forgot your password?
+              Registrar
             </Link>
           )}
 
