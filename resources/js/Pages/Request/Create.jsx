@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm } from '@inertiajs/inertia-react';
 import Button from '@/Components/Button';
@@ -198,6 +198,21 @@ export default function Create({
     }
   };
 
+  const requestTotal = useMemo(
+    () =>
+      listProducts?.reduce((previousValue, currentValue) => {
+        console.log(
+          previousValue +
+            Number(currentValue.preco) * Number(currentValue.quantity)
+        );
+        return (
+          previousValue +
+          Number(currentValue.preco) * Number(currentValue.quantity)
+        );
+      }, 0),
+    [listProducts]
+  );
+
   return (
     <Authenticated
       auth={auth}
@@ -368,6 +383,21 @@ export default function Create({
                     noDataComponent="Carrinho Vazio"
                   />
                 </div>
+                {listProducts.length > 0 && (
+                  <div className="col-span-12 pt-4">
+                    <h1 className="text-lg w-full text-right font-extrabold tracking-widest text-black">
+                      Valor Total:{' '}
+                      <CurrencyFormat
+                        value={requestTotal}
+                        decimalSeparator=","
+                        displayType={'text'}
+                        thousandSeparator={'.'}
+                        prefix={'R$'}
+                        renderText={(value) => <b>{value}</b>}
+                      />
+                    </h1>
+                  </div>
+                )}
               </div>
             </div>
           </div>

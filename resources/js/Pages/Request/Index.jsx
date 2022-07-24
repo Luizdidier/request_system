@@ -144,7 +144,9 @@ export default function Index({ requests, auth, errors, paymentTypes }) {
                 columns={columns}
                 data={requests}
                 pagination
-                noDataComponent="Não há dados disponíveis"
+                noDataComponent={
+                  <div className="py-10">Não há dados disponíveis</div>
+                }
                 paginationComponentOptions={paginationComponentOptions}
               />
             </div>
