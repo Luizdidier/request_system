@@ -113,11 +113,11 @@ class RequestController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  
+     * @param  int 
      * @return \Inertia\Response
      */
 
-    public function show()
+    public function show($id)
     {
         //
         $request = Requests::with(['products', 'client', 'paymentType'])
